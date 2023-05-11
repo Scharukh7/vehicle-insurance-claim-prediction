@@ -4,6 +4,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
+from xgboost import XGBRegressor
+from lightgbm import LGBMRegressor
 import pandas as pd
 import numpy as np
 import pickle
@@ -25,7 +27,9 @@ class PredictionModel:
         self.models = {
             "linear_regression": LinearRegression(),
             "k_nearest_neighbors": KNeighborsRegressor(n_neighbors=5),
-            "decision_tree": DecisionTreeRegressor()
+            "decision_tree": DecisionTreeRegressor(),
+            "xgboost": XGBRegressor(random_state=42),  # Added XGBoost model
+            "lightgbm": LGBMRegressor(random_state=42)  # Added LightGBM model
         }
         self.predictions = {}  # Dictionary to store predictions from each model
 
@@ -99,7 +103,7 @@ class PredictionModel:
     # Method to save the trained models, imputers and encoders.
     def save_models(self):
         for model_name in self.models:
-            with open(f'C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/{model_name}_model.pkl', 'wb') as f:
+            with open(f'C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/{model_name}_model.pkl', 'wb') as f:
                 pickle.dump(self.models[model_name], f)
         with open('imputers.pkl', 'wb') as f:
             pickle.dump(self.imputers, f)
@@ -113,27 +117,27 @@ class PredictionModel:
 
     # Method to load the trained models
     def load_models(self):
-        for model_name in ["linear_regression", "k_nearest_neighbors", "decision_tree"]:
-            with open(f'C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/{model_name}_model.pkl', 'rb') as f:
+        for model_name in ["linear_regression", "k_nearest_neighbors", "decision_tree", "xgboost", "lightgbm"]:
+            with open(f'C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/{model_name}_model.pkl', 'rb') as f:
                 self.models[model_name] = pickle.load(f)
         return self.models
 
 # The main function of the script
 if __name__ == "__main__":
-    model = PredictionModel('C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/train_SJC.csv')
+    model = PredictionModel('C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/train_SJC.csv')
     model.train_models()  # Train the models
     model.save_models()  # Save the trained models, imputers and encoders
     loaded_models = model.load_models()  # Load the trained models
 
     # Load the imputers and encoders
-    with open('C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/imputers.pkl', 'rb') as f:
+    with open('C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/imputers.pkl', 'rb') as f:
         loaded_imputers = pickle.load(f)
 
-    with open('C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/encoders.pkl', 'rb') as f:
+    with open('C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/encoders.pkl', 'rb') as f:
         loaded_encoders = pickle.load(f)
         
     # Load the RMSE scores
-    with open('C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/rmse_scores.pkl', 'rb') as f:
+    with open('C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/rmse_scores.pkl', 'rb') as f:
         loaded_rmse_scores = pickle.load(f)
 
     # Determine the model with the best (lowest) RMSE

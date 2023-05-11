@@ -8,14 +8,14 @@ class InsuranceClaimGUI(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
 
         # Initialize the model
-        self.model = PredictionModel('C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/train_SJC.csv')
+        self.model = PredictionModel('C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/train_SJC.csv')
 
         # Load the models, imputers and encoders
         self.model.load_models()
-        with open('C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/imputers.pkl', 'rb') as f:
+        with open('C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/imputers.pkl', 'rb') as f:
             self.model.imputers = pickle.load(f)
 
-        with open('C:/Users/xkens/Desktop/Vehicle-Insurance-Claim-Prediction-main/encoders.pkl', 'rb') as f:
+        with open('C:/Users/xkens/Documents/vehicle-insurance-claim-prediction/encoders.pkl', 'rb') as f:
             self.model.encoders = pickle.load(f)
 
 
@@ -47,9 +47,10 @@ class InsuranceClaimGUI(tk.Tk):
         try:
             predictions = self.model.predict(input_data)
             for model_name, prediction in predictions.items():
-                messagebox.showinfo("Prediction", f"Prediction from {model_name}: {prediction[0]}")
+                messagebox.showinfo("Prediction", f"Estimated claim cost from {model_name}: {prediction[0]} GBP")
         except Exception as e:
             messagebox.showerror("Error", str(e))
+
 
 if __name__ == '__main__':
     InsuranceClaimGUI().mainloop()
