@@ -17,10 +17,12 @@ This repository contains an application for predicting vehicle insurance claims.
 
 ## Usage
 
-1. The `model.py` file contains the machine learning models and data preprocessing steps. Run this script to train the models:
+1. The `model.py` file contains the machine learning models and data preprocessing steps. Run this script to train the models: Run using the following:
+
+## python model.py 25 M M 2 1000 F 25
+- Where 25 is Age, make sure age is above 18, Gender M is Male but can be F for Female, 2 is Children, 1000 is weekly rate, F is work FullTime, for partime its P, and 25 is Working hours per week.
 
 2. The `app.py` file contains a GUI for making predictions using the trained models. Run this script to launch the GUI:
-
 
 3. In the GUI, fill in the fields with your data and click "Predict" to get a prediction from each model.
 
